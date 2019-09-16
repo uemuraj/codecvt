@@ -15,5 +15,6 @@ jobs:
       run: echo Hello, world!
     - name: Check Build Tools
       run: |
-        devenv /?
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
         MSBuild -help
+        devenv /?
