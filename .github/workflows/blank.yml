@@ -16,5 +16,4 @@ jobs:
     - name: Check Build Tools
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
-        MSBuild -help
-        devenv /?
+        MSBuild "%GITHUB_WORKSPACE%\codecvt.sln" -t:Release
