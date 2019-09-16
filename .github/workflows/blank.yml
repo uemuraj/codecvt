@@ -10,10 +10,11 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
     - name: Check Build Tools
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
-        echo %WindowsSDKVersion%
-        MSBuild "%GITHUB_WORKSPACE%\codecvt.sln" -nologo -p:Configuration=Release -t:build 
+        MSBuild "%GITHUB_WORKSPACE%\codecvt.sln" -nologo -p:Configuration=Release -t:build
+    - uses: actions/upload-artifact@master
+      with:
+        name: codecvt
+        path: "%GITHUB_WORKSPACE%\x64\Release\codecvt.exe"
