@@ -1,8 +1,9 @@
 name: CI
 
 on:
+  push:
   schedule:
-    - cron: 50 * * * *
+    - cron: 5 * * * *
 
 jobs:
   build:
@@ -16,4 +17,5 @@ jobs:
     - name: Check Build Tools
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
-        MSBuild "%GITHUB_WORKSPACE%\codecvt.sln" -t:Release
+        echo %WindowsSDKVersion%
+        MSBuild "%GITHUB_WORKSPACE%\codecvt.sln" -nologo -p:Configuration=Release -t:build 
