@@ -17,7 +17,7 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: codecvt
-        path: "d:\\a\\codecvt\\codecvt\\x64\\Release\\codecvt.exe"
+        path: "${{ runner.workspace }}\\codecvt\\x64\\Release\\codecvt.exe"
     - name: Dump GitHub context
       env:
         GITHUB_CONTEXT: ${{ toJson(github) }}
