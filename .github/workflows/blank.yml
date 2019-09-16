@@ -17,4 +17,4 @@ jobs:
     - uses: actions/upload-artifact@master
       with:
         name: codecvt
-        path: "%GITHUB_WORKSPACE%\x64\Release\codecvt.exe"
+        path: "%GITHUB_WORKSPACE%\\x64\\Release\\codecvt.exe"
