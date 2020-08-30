@@ -1,9 +1,9 @@
-#include <cassert>
+﻿#include <cassert>
 #include <locale>
 #include <iostream>
 
 //
-// __cplusplus �̒l�́u�ǉ��̃I�v�V�����v�� /Zc:__cplusplus �𒼐ڎw�肵�Ȃ��� 199711L �̂܂܂ɂȂ��Ă��܂�
+// __cplusplus の値は「追加のオプション」で /Zc:__cplusplus を直接指定しないと 199711L のままになってしまう
 //
 // * https://docs.microsoft.com/ja-jp/cpp/build/reference/zc-cplusplus?view=vs-2019
 // 
@@ -21,8 +21,8 @@ void main()
 
 	try
 	{
-		assert(convert(L"�ق��ق�").compare("�ق��ق�") == 0);
-		assert(convert("�ق��ق�").compare(L"�ق��ق�") == 0);
+		assert(convert(L"ほげほげ").compare("ほげほげ") == 0);
+		assert(convert("ほげほげ").compare(L"ほげほげ") == 0);
 	}
 	catch (const std::exception & e)
 	{
@@ -32,32 +32,32 @@ void main()
 
 #else
 
-// �}���`�o�C�g������Ƃ̕ϊ���̌^�͌��ǂP�Ɍ��܂�
+// マルチバイト文字列との変換器の型は結局１つに決まる
 using mbs_codecvt = std::codecvt<wchar_t, char, std::mbstate_t>;
 
 void main()
 {
-	// local �N���X�̃f�t�H���g�R���X�g���N�^�́A���݂̃O���[�o�����P�[���𕡐����邪...
-	// �O���[�o�����P�[������ɐݒ肵�Ă��Ȃ���΁A������Ԃ͓��{��ł͂Ȃ�
+	// local クラスのデフォルトコンストラクタは、現在のグローバルロケールを複製するが...
+	// グローバルロケールを特に設定していなければ、初期状態は日本語ではない
 
-	// local �N���X�̃R���X�g���N�^�ɋ󕶎����n���ƁA���ϐ��Ȃ� OS �̃��[���ɏ]�������P�[�������������
-	// ���s�������{��ł���Γ��{��ɂȂ�A�����łȂ���Γ��{��ł͂Ȃ�
+	// local クラスのコンストラクタに空文字列を渡すと、環境変数など OS のルールに従ったロケールが複製される
+	// 実行環境が日本語であれば日本語になり、そうでなければ日本語ではない
 
 	std::locale::global(std::locale(""));
 
-	// �ϊ���͎Q�ƂƂ��ē�����
+	// 変換器は参照として得られる
 	const mbs_codecvt & cvt = std::use_facet<mbs_codecvt>(std::locale());
 
-	// wstring_convert �͕ϊ���ւ̃|�C���^���g��
+	// wstring_convert は変換器へのポインタを使う
 	std::wstring_convert<mbs_codecvt> converter(&cvt);
 
-	// ���e�����łȂ������̓��͒l�Ńe�X�g���������ǂ���������... mbs �̒l�������ƍŏ��̕�����Ɠ����͂�
-	std::wstring wcs = converter.from_bytes("�ق��ق�");
+	// リテラルでなく何かの入力値でテストした方が良さそうだが... mbs の値がちゃんと最初の文字列と同じはず
+	std::wstring wcs = converter.from_bytes("ほげほげ");
 	std::string mbs = converter.to_bytes(wcs.c_str());
 
 	std::cout << mbs << std::endl;
 
-	assert(mbs.compare("�ق��ق�") == 0);
+	assert(mbs.compare("ほげほげ") == 0);
 }
 
 #endif
