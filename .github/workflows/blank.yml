@@ -11,6 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Check Build Tools
+      shell: cmd
       run: |
         call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
         MSBuild "%GITHUB_WORKSPACE%\codecvt.sln" -nologo -p:Configuration=Release -t:build
