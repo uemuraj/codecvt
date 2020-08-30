@@ -2,10 +2,38 @@
 #include <locale>
 #include <iostream>
 
+//
+// __cplusplus の値は「追加のオプション」で /Zc:__cplusplus を直接指定しないと 199711L のままになってしまう
+//
+// * https://docs.microsoft.com/ja-jp/cpp/build/reference/zc-cplusplus?view=vs-2019
+// 
+
+#pragma message("__cplusplus=" _CRT_STRINGIZE(__cplusplus))
+#pragma message("_MSVC_LANG=" _CRT_STRINGIZE(_MSVC_LANG))
+
+#if (__cplusplus >= 201703L) || (_MSVC_LANG >= 201703L)
+
+#include "string_convert.h"
+
+void main()
+{
+	std::locale::global(std::locale(""));
+
+	try
+	{
+		assert(convert(L"ほげほげ").compare("ほげほげ") == 0);
+		assert(convert("ほげほげ").compare(L"ほげほげ") == 0);
+	}
+	catch (const std::exception & e)
+	{
+		std::cout << e.what() << std::endl;
+	}
+}
+
+#else
 
 // マルチバイト文字列との変換器の型は結局１つに決まる
 using mbs_codecvt = std::codecvt<wchar_t, char, std::mbstate_t>;
-
 
 void main()
 {
@@ -31,3 +59,5 @@ void main()
 
 	assert(mbs.compare("ほげほげ") == 0);
 }
+
+#endif
